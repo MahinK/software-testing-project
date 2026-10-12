@@ -1,0 +1,16 @@
+import tailwindcss from '@tailwindcss/vite'
+import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite'
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+  server: {
+    proxy: {
+      // FastAPI backend; override with API_URL=http://host:port npm run dev
+      '/api': {
+        target: process.env.API_URL ?? 'http://localhost:8001',
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
+  },
+})
